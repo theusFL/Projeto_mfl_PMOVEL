@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "191414380993",
+    "project_id": "projeto-mfl-pmovel",
+    "storage_bucket": "projeto-mfl-pmovel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191414380993:android:e20af3d217975c47c32740",
+        "android_client_info": {
+          "package_name": "com.example.projeto_mfl_pmovel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIvwFJ_rq2h248d3b9_c9PF5HXRLF9xb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
