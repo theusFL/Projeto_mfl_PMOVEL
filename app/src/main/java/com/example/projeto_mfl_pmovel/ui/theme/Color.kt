@@ -2,7 +2,6 @@ package com.example.projeto_mfl_pmovel.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Paleta de exemplo (tons de Roxo/Rosa do M3 padrão)
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
