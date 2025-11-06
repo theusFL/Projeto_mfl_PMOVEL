@@ -1,7 +1,5 @@
 package com.example.projeto_mfl_pmovel.navigation
 
-// AppNavigation.kt (arquivo novo)
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
