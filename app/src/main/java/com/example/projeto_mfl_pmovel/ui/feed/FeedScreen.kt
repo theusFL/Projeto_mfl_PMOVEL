@@ -1,6 +1,5 @@
 package com.example.projeto_mfl_pmovel.ui.feed
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,54 +16,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import com.google.firebase.auth.FirebaseAuth
+import coil.compose.AsyncImage // Coil continua funcionando para carregar URLs
+import com.example.projeto_mfl_pmovel.data.model.Post
 
 @Composable
 fun FeedScreen(
-    modifier: Modifier = Modifier, // Recebe o modifier (com padding) do AppNavigation
+    modifier: Modifier = Modifier,
     viewModel: FeedViewModel = viewModel()
 ) {
-    // Observa o novo uiState
     val uiState by viewModel.uiState.collectAsState()
+    val posts = uiState.posts
 
-    // BÔNUS: Lida com os 3 estados da UI
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        when (val state = uiState) {
-            is UiState.Loading -> {
-                CircularProgressIndicator()
-            }
-            is UiState.Success -> {
-                val posts = state.data
-                if (posts.isEmpty()) {
-                    Text("Nenhuma postagem ainda...")
-                } else {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(posts) { post ->
-                            // Passa o viewModel e o post
-                            PostItem(post = post, viewModel = viewModel)
-                        }
-                    }
+        if (posts.isEmpty()) {
+            Text("Nenhuma postagem ainda...")
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(posts) { post ->
+                    PostItem(
+                        post = post,
+                        onLikeClicked = { viewModel.toggleLike(post.id) }
+                    )
                 }
-            }
-            is UiState.Error -> {
-                Text(
-                    text = "Falha ao carregar posts: ${state.message}",
-                    color = MaterialTheme.colorScheme.error
-                )
             }
         }
     }
 }
 
 @Composable
-fun PostItem(post: Post, viewModel: FeedViewModel) { // Recebe o ViewModel
-    val auth = FirebaseAuth.getInstance()
-    // Verifica se o usuário atual curtiu este post
-    val isLiked = post.likedBy.contains(auth.currentUser?.uid)
+fun PostItem(post: Post, onLikeClicked: () -> Unit) {
 
     Card(
         modifier = Modifier
@@ -95,20 +78,14 @@ fun PostItem(post: Post, viewModel: FeedViewModel) { // Recebe o ViewModel
 
                 // Lógica do Botão de Like
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = {
-                        // Chama a função do ViewModel!
-                        viewModel.toggleLike(post.id, post.likedBy)
-                    }) {
+                    IconButton(onClick = { onLikeClicked() }) {
                         Icon(
-                            // Muda o ícone baseado no 'isLiked'
-                            imageVector = if (isLiked) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                            imageVector = if (post.isLiked) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Like",
-                            // Muda a cor baseado no 'isLiked'
-                            tint = if (isLiked) Color.Red else LocalContentColor.current
+                            tint = if (post.isLiked) Color.Red else LocalContentColor.current
                         )
                     }
-                    // Mostra o total de likes baseado no tamanho da lista
-                    Text("${post.likedBy.size} likes")
+                    Text("${post.likes} likes")
                 }
             }
         }
