@@ -6,5 +6,5 @@ data class Post(
     val imageUrl: String,
     val description: String,
     val likes: Int,
-    val isLiked: Boolean = false // Para controlar o estado do like localmente
+    val isLiked: Boolean = false 
 )
