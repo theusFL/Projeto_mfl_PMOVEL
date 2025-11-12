@@ -1,4 +1,4 @@
-package com.example.projeto_mfl_pmovel.ui.auth // Verifique se está na pasta correta
+package com.example.projeto_mfl_pmovel.ui.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
