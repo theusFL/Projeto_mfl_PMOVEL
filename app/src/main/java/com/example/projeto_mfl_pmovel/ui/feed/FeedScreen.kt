@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage // Coil continua funcionando para carregar URLs
+import coil.compose.AsyncImage
 import com.example.projeto_mfl_pmovel.data.model.Post
 
 @Composable
@@ -29,12 +29,16 @@ fun FeedScreen(
 
     Box(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center 
     ) {
         if (posts.isEmpty()) {
             Text("Nenhuma postagem ainda...")
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .widthIn(max = 700.dp)
+                    .fillMaxSize()
+            ) {
                 items(posts) { post ->
                     PostItem(
                         post = post,
@@ -61,7 +65,7 @@ fun PostItem(post: Post, onLikeClicked: () -> Unit) {
                 contentDescription = post.description,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp),
+                    .aspectRatio(16f / 9f),
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.padding(16.dp)) {
@@ -76,7 +80,6 @@ fun PostItem(post: Post, onLikeClicked: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Lógica do Botão de Like
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { onLikeClicked() }) {
                         Icon(
