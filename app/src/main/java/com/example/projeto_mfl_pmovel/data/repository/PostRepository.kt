@@ -10,7 +10,6 @@ class PostRepository {
         Post(
             id = UUID.randomUUID().toString(),
             username = "coelhoviaja",
-            // Usamos um serviço de imagens aleatórias
             imageUrl = "https://picsum.photos/seed/picsum/400/300",
             description = "Primeira foto da viagem! ✈️",
             likes = 12
@@ -21,7 +20,7 @@ class PostRepository {
             imageUrl = "https://picsum.photos/seed/food/400/300",
             description = "O que comemos hoje: lasanha.",
             likes = 42,
-            isLiked = true // Este já vem curtido
+            isLiked = true
         ),
         Post(
             id = UUID.randomUUID().toString(),
@@ -32,7 +31,6 @@ class PostRepository {
         )
     )
 
-    // A função que o ViewModel vai chamar
     fun getPosts(): List<Post> {
         return initialPosts
     }
