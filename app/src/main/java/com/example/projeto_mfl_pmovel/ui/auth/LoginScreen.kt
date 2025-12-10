@@ -11,56 +11,22 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoginScreen(
-    onLoginClick: () -> Unit
-) {
+fun LoginScreen(onLoginClick: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
-            modifier = Modifier
-                .widthIn(max = 500.dp)
-                .fillMaxWidth()       
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.widthIn(max = 500.dp).padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Text(
-                text = "Login",
-                style = MaterialTheme.typography.headlineLarge
-            )
-
+            Text("Login", style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(32.dp))
-
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
+            OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") }, modifier = Modifier.fillMaxWidth())
             Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Senha") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-            )
-
+            OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Senha") }, modifier = Modifier.fillMaxWidth(), visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
             Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = { onLoginClick() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            Button(onClick = { onLoginClick() }, modifier = Modifier.fillMaxWidth()) {
                 Text("Entrar")
             }
         }
