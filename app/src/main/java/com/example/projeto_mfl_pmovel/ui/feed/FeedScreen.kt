@@ -12,51 +12,48 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.projeto_mfl_pmovel.data.model.Post
+import androidx.lifecycle.viewmodel.compose.viewModel // Importante
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
-    modifier: Modifier = Modifier,
-    viewModel: FeedViewModel = viewModel()
+    viewModel: FeedViewModel, // Recebe o ViewModel pronto
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val posts = uiState.posts
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("MathComunity") },
+                title = { Text("Comunidade") },
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Default.Home,
-                        contentDescription = "Logo do App",
+                        contentDescription = "Logo",
                         modifier = Modifier.padding(start = 12.dp)
                     )
                 }
             )
         }
     ) { paddingValues ->
-
         Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
-            if (posts.isEmpty()) {
+            if (uiState.isLoading && uiState.posts.isEmpty()) {
+                CircularProgressIndicator()
+            } else if (uiState.posts.isEmpty()) {
                 Text("Nenhuma postagem ainda...")
             } else {
                 LazyColumn(
-                    modifier = Modifier
-                        .widthIn(max = 700.dp)
-                        .fillMaxSize()
+                    modifier = Modifier.widthIn(max = 700.dp).fillMaxSize()
                 ) {
-                    items(posts) { post ->
+                    items(uiState.posts) { post ->
                         PostItem(
                             post = post,
-                            onLikeClicked = { viewModel.toggleLike(post.id) }
+                            onLikeClicked = { viewModel.toggleLike(post) }
                         )
                     }
                 }
