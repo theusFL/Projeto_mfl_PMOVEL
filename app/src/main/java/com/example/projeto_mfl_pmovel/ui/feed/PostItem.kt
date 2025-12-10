@@ -16,10 +16,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.projeto_mfl_pmovel.data.model.Post
 
-
 @Composable
 fun PostItem(post: Post, onLikeClicked: () -> Unit) {
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,17 +30,14 @@ fun PostItem(post: Post, onLikeClicked: () -> Unit) {
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Para o ícone "..."
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = post.username,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold // Dando destaque, como no Insta
+                    fontWeight = FontWeight.Bold
                 )
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Opções"
-                )
+                Icon(Icons.Default.MoreVert, contentDescription = "Opções")
             }
 
             AsyncImage(
@@ -55,7 +50,6 @@ fun PostItem(post: Post, onLikeClicked: () -> Unit) {
             )
 
             Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
-
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { onLikeClicked() }) {
                         Icon(
@@ -65,19 +59,9 @@ fun PostItem(post: Post, onLikeClicked: () -> Unit) {
                         )
                     }
                 }
-
-                Text(
-                    "${post.likes} likes",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
+                Text("${post.likes} likes", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = post.description,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Text(post.description)
             }
         }
     }
