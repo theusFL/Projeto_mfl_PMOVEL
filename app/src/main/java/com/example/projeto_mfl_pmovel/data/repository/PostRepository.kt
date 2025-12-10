@@ -1,37 +1,33 @@
 package com.example.projeto_mfl_pmovel.data.repository
 
+import com.example.projeto_mfl_pmovel.data.local.PostDao
 import com.example.projeto_mfl_pmovel.data.model.Post
-import java.util.UUID
+import com.example.projeto_mfl_pmovel.data.remote.PostRemoteDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class PostRepository {
+class PostRepository(
+    private val dao: PostDao,
+    private val remoteDataSource: PostRemoteDataSource
+) {
+    val posts: Flow<List<Post>> = dao.getAllPosts().map { entities ->
+        entities.map { entity ->
+            Post(entity.id, entity.username, entity.imageUrl, entity.description, entity.likes, entity.isLiked)
+        }
+    }
 
-    // Nossa "base de dados" fake
-    private val initialPosts = listOf(
-        Post(
-            id = UUID.randomUUID().toString(),
-            username = "coelhoviaja",
-            imageUrl = "https://picsum.photos/seed/picsum/400/300",
-            description = "Primeira foto da viagem! ✈️",
-            likes = 12
-        ),
-        Post(
-            id = UUID.randomUUID().toString(),
-            username = "gato_gourmet",
-            imageUrl = "https://picsum.photos/seed/food/400/300",
-            description = "O que comemos hoje: lasanha.",
-            likes = 42,
-            isLiked = true
-        ),
-        Post(
-            id = UUID.randomUUID().toString(),
-            username = "android_dev",
-            imageUrl = "https://picsum.photos/seed/code/400/300",
-            description = "Trabalhando no meu novo app! #Compose",
-            likes = 7
-        )
-    )
+    suspend fun refreshPosts() {
+        try {
+            val remotePosts = remoteDataSource.fetchPostsFromApi()
+            dao.insertAll(remotePosts)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
-    fun getPosts(): List<Post> {
-        return initialPosts
+    suspend fun toggleLike(post: Post) {
+        val newLikeState = !post.isLiked
+        val newLikesCount = if (newLikeState) post.likes + 1 else post.likes - 1
+        dao.updateLike(post.id, newLikeState, newLikesCount)
     }
 }
